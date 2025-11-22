@@ -1,3 +1,7 @@
+`1.5.1`
+
+- Ungrabbable bodyflag.
+
 `1.5.0`
 - fixed for MemOp
 - made fireballs actually come from his mouth

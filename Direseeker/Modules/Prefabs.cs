@@ -38,6 +38,7 @@ namespace DireseekerMod.Modules
 			component.levelDamage = component.baseDamage * 0.2f;
 			component.isChampion = true;
 			component.portraitIcon = Assets.bossPortrait;
+			component.bodyFlags |= CharacterBody.BodyFlags.Ungrabbable;
 			Prefabs.direseekerBodyPrefab.GetComponent<SfxLocator>().deathSound = "DireseekerDeath";
 			Prefabs.direseekerBodyPrefab.GetComponent<ModelLocator>().modelBaseTransform.localScale *= 1.5f;
 			Prefabs.direseekerBodyPrefab.GetComponent<ModelLocator>().modelBaseTransform.localPosition = Vector3.up * -5.5f;
