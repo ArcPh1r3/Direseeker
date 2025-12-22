@@ -14,7 +14,7 @@ Replaces the legendary chest in Abyssal Depths with a unique AWU-tier superboss,
 
 Direseeker is a massive Elder Lemurian with devastating fiery attacks. Killing it should be faster than AWU, but the risk is far greater as it's an offensive powerhouse.
 
-The intent is to make Abyssal Depths a more viable stage for multiplayer, providing a red item for each player like AWU does.=
+The intent is to make Abyssal Depths a more viable stage for multiplayer, providing a red item for each player like AWU does.
 
 ## Installation
 

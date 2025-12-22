@@ -76,7 +76,7 @@ namespace DireseekerMod.States
 					muzzleName = muzzleString,
 					hitEffectPrefab = Flamebreath.impactEffectPrefab,
 					isCrit = this.isCrit,
-					radius = Flamebreath.radius,
+					radius = Flamebreath.radius * 3f,
 					falloffModel = BulletAttack.FalloffModel.None,
 					stopperMask = LayerIndex.world.mask,
 					procCoefficient = Flamebreath.procCoefficientPerTick,

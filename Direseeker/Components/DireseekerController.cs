@@ -7,20 +7,12 @@ namespace DireseekerMod.Components
 	{
 		public void StartRageMode()
 		{
-			bool flag = this.rageFlame;
-			if (flag)
-			{
-				this.rageFlame.Play();
-			}
+			if (this.rageFlame) this.rageFlame.Play();
 		}
 
 		public void FlameBurst()
 		{
-			bool flag = this.burstFlame;
-			if (flag)
-			{
-				this.burstFlame.Play();
-			}
+			if (this.burstFlame) this.burstFlame.Play();
 		}
 
 		public ParticleSystem burstFlame;

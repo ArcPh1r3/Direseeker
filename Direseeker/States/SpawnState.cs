@@ -15,8 +15,8 @@ namespace DireseekerMod.States
 			lastUpdateTime = Time.time;
 			base.GetModelAnimator();
 			Util.PlaySound(EntityStates.LemurianBruiserMonster.SpawnState.spawnSoundString, base.gameObject);
-			//Util.PlaySound("DireseekerSpawn", base.gameObject);
-			Util.PlaySound("Play_magmaWorm_spawn_VO", base.gameObject);
+			Util.PlaySound("sfx_direseeker_spawn", base.gameObject);
+			//Util.PlaySound("Play_magmaWorm_spawn_VO", base.gameObject);
 			base.PlayAnimation("Body", "Spawn", "Spawn.playbackRate", SpawnState.duration);
 			EffectManager.SimpleMuzzleFlash(EntityStates.LemurianBruiserMonster.SpawnState.spawnEffectPrefab, base.gameObject, "SpawnEffectOrigin", false);
 			this.effectStopwatch = 0.7f;

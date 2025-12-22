@@ -13,14 +13,16 @@
   <ItemGroup>
     <None Remove="DiggerBank.bnk" />
     <None Remove="direseeker" />
-    <None Remove="DireseekerBank.bnk" />
+    <None Remove="direseeker2" />
     <None Remove="DireseekerMod.direseeker" />
     <None Remove="DireseekerMod.DireseekerBank.bnk" />
+    <None Remove="direseeker_bank2.bnk" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="direseeker" />
-    <EmbeddedResource Include="DireseekerBank.bnk" />
+    <EmbeddedResource Include="direseeker2" />
+    <EmbeddedResource Include="direseeker_bank2.bnk" />
   </ItemGroup>
 
   <ItemGroup>

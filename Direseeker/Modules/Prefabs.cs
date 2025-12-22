@@ -39,7 +39,7 @@ namespace DireseekerMod.Modules
 			component.isChampion = true;
 			component.portraitIcon = Assets.bossPortrait;
 			component.bodyFlags |= CharacterBody.BodyFlags.Ungrabbable;
-			Prefabs.direseekerBodyPrefab.GetComponent<SfxLocator>().deathSound = "DireseekerDeath";
+			Prefabs.direseekerBodyPrefab.GetComponent<SfxLocator>().deathSound = "sfx_direseeker_death";
 			Prefabs.direseekerBodyPrefab.GetComponent<ModelLocator>().modelBaseTransform.localScale *= 1.5f;
 			Prefabs.direseekerBodyPrefab.GetComponent<ModelLocator>().modelBaseTransform.localPosition = Vector3.up * -5.5f;
 
@@ -143,6 +143,8 @@ namespace DireseekerMod.Modules
 			//finally, replace the skin in the ModelSkinController with ours
 			direseekerCharacterModel.gameObject.GetComponent<ModelSkinController>().skins[0] = newDefaultSkin;
 
+			// wow this process got a whole lot messier huh
+
 			Prefabs.masterPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/LemurianBruiser/LemurianBruiserMaster.prefab").WaitForCompletion().InstantiateClone("DireseekerBossMaster", true);
 			CharacterMaster characterMaster = Prefabs.masterPrefab.GetComponent<CharacterMaster>();
 			characterMaster.bodyPrefab = Prefabs.direseekerBodyPrefab;
@@ -177,7 +179,7 @@ namespace DireseekerMod.Modules
 			aiskillDriver.minTargetHealthFraction = float.NegativeInfinity;
 			aiskillDriver.maxTargetHealthFraction = float.PositiveInfinity;
 			aiskillDriver.minUserHealthFraction = float.NegativeInfinity;
-			aiskillDriver.maxUserHealthFraction = 0.2f;
+			aiskillDriver.maxUserHealthFraction = 0.4f;
 			aiskillDriver.skillSlot = SkillSlot.Special;
 			AISkillDriver aiskillDriver2 = Prefabs.masterPrefab.AddComponent<AISkillDriver>();
 			aiskillDriver2.customName = "FlamePillar";
@@ -197,7 +199,7 @@ namespace DireseekerMod.Modules
 			aiskillDriver2.minTargetHealthFraction = float.NegativeInfinity;
 			aiskillDriver2.maxTargetHealthFraction = float.PositiveInfinity;
 			aiskillDriver2.minUserHealthFraction = float.NegativeInfinity;
-			aiskillDriver2.maxUserHealthFraction = 0.75f;
+			aiskillDriver2.maxUserHealthFraction = 0.8f;
 			aiskillDriver2.skillSlot = SkillSlot.Utility;
 			AISkillDriver aiskillDriver3 = Prefabs.masterPrefab.AddComponent<AISkillDriver>();
 			aiskillDriver3.customName = "Flamethrower";

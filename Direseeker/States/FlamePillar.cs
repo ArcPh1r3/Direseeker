@@ -69,8 +69,8 @@ namespace DireseekerMod.States
 			}
 			base.PlayAnimation("Gesture, Override", "PrepFlamebreath", "PrepFlamebreath.playbackRate", FlamePillar.entryDuration);
 			this.subState = FlamePillar.SubState.Prep;
-			//Util.PlaySound("DireseekerAttack", base.gameObject);
-			Util.PlaySound("Play_magmaWorm_spawn_VO", base.gameObject);
+			Util.PlaySound("sfx_direseeker_woosh", base.gameObject);
+			//Util.PlaySound("Play_magmaWorm_spawn_VO", base.gameObject);
 			bool active = NetworkServer.active;
 			if (active)
 			{
@@ -211,8 +211,8 @@ namespace DireseekerMod.States
 		}
 
 		public static float entryDuration = 1.5f;
-		public static float fireDuration = 0.5f;
-		public static float exitDuration = 0.5f;
+		public static float fireDuration = 0.1f;
+		public static float exitDuration = 0.15f;
 		public static float maxDistance = 128f;
 		public static float trackingDuration = 0.85f;
 		public static float pillarDamageCoefficient = 6f;

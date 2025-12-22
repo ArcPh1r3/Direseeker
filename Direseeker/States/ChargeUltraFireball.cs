@@ -14,7 +14,7 @@ namespace DireseekerMod.States
 			this.duration = ChargeUltraFireball.baseDuration / this.attackSpeedStat;
 			Animator modelAnimator = base.GetModelAnimator();
 			Transform modelTransform = base.GetModelTransform();
-			Util.PlayAttackSpeedSound(ChargeMegaFireball.attackString, base.gameObject, this.attackSpeedStat);
+			Util.PlayAttackSpeedSound("sfx_direseeker_charge", base.gameObject, this.attackSpeedStat);
 			bool flag = modelTransform;
 			if (flag)
 			{
@@ -72,7 +72,7 @@ namespace DireseekerMod.States
 
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
-			return InterruptPriority.Skill;
+			return InterruptPriority.PrioritySkill;
 		}
 
 		public static float baseDuration = 2f;

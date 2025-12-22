@@ -24,7 +24,7 @@ namespace DireseekerMod.States
 				this.direController.FlameBurst();
 			}
 			base.PlayAnimation("Gesture, Additive", "FireMegaFireball", "FireMegaFireball.playbackRate", this.duration);
-			Util.PlaySound(FireMegaFireball.attackString, base.gameObject);
+			Util.PlaySound("sfx_direseeker_fire", base.gameObject);
 		}
 
 		public override void OnExit()
@@ -79,7 +79,7 @@ namespace DireseekerMod.States
 
 		public override InterruptPriority GetMinimumInterruptPriority()
 		{
-			return InterruptPriority.Skill;
+			return InterruptPriority.PrioritySkill;
 		}
 
 		public static int projectileCount = 15;
