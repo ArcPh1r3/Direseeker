@@ -41,9 +41,10 @@ namespace DireseekerMod.Components
 			// i think i should
 
 			// i'm gonna fire it from auth instead
-			if (this.characterBody && this.characterBody.hasEffectiveAuthority && this.healthComponent && this.healthComponent.alive)
+			if (this.characterBody && this.healthComponent && this.healthComponent.alive)
 			{
-				this.ShitMeatball();
+				Util.PlaySound("sfx_direseeker_magma", this.gameObject);
+				if (this.characterBody.hasEffectiveAuthority) this.ShitMeatball();
 			}
 		}
 
