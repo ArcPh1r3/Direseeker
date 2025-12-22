@@ -164,16 +164,15 @@ namespace DireseekerMod.States
 						{
 							this.subState = FlamePillar.SubState.Exit;
 							this.stopwatch = 0f;
-							base.PlayCrossfade("Gesture, Override", "ExitFlamebreath", "ExitFlamebreath.playbackRate", FlamePillar.fireDuration, 0.1f);
 						}
 						break;
 					}
 				case FlamePillar.SubState.Exit:
 					{
-						bool flag8 = this.stopwatch >= FlamePillar.exitDuration && base.isAuthority;
-						if (flag8)
+						if (this.stopwatch >= FlamePillar.exitDuration)
 						{
-							this.outer.SetNextStateToMain();
+                            base.PlayCrossfade("Gesture, Override", "ExitFlamebreath", "ExitFlamebreath.playbackRate", FlamePillar.fireDuration, 0.1f);
+                            if (base.isAuthority) this.outer.SetNextStateToMain();
 						}
 						break;
 					}
