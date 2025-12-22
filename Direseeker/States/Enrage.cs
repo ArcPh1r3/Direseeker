@@ -19,17 +19,12 @@ namespace DireseekerMod.States
 			this.entryDuration = Enrage.baseEntryDuration / this.attackSpeedStat;
 			this.exitDuration = Enrage.baseExitDuration / this.attackSpeedStat;
 			this.childLocator = base.GetModelChildLocator();
-			this.direController = base.GetComponent<DireseekerController>();
-			bool flag = this.direController;
-			if (flag)
-			{
-				this.direController.StartRageMode();
-			}
-			bool active = NetworkServer.active;
-			if (active)
-			{
-				base.characterBody.AddBuff(RoR2Content.Buffs.ArmorBoost);
-			}
+			this.direController = this.GetComponent<DireseekerController>();
+
+			if (this.direController) this.direController.StartRageMode();
+
+			if (NetworkServer.active) base.characterBody.AddBuff(RoR2Content.Buffs.ArmorBoost);
+
 			this.characterBody.baseRegen = -30f;
 			base.PlayAnimation("Gesture, Override", "PrepFlamebreath", "PrepFlamebreath.playbackRate", this.entryDuration);
             //Util.PlaySound("Play_magmaWorm_spawn_VO", base.gameObject);
@@ -38,11 +33,9 @@ namespace DireseekerMod.States
 
 		private void GrantItems()
 		{
-			bool active = NetworkServer.active;
-			if (active)
+			if (NetworkServer.active)
 			{
-				bool flag = base.characterBody.master && base.characterBody.master.inventory;
-				if (flag)
+				if (base.characterBody.master && base.characterBody.master.inventory)
 				{
 					base.characterBody.master.inventory.GiveItem(RoR2Content.Items.AdaptiveArmor, 1);
 					base.characterBody.master.inventory.GiveItem(RoR2Content.Items.AlienHead, 10);
@@ -61,10 +54,9 @@ namespace DireseekerMod.States
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
-
 			this.stopwatch += GetDeltaTime();
-			bool flag = this.stopwatch >= this.entryDuration && !this.hasEnraged;
-			if (flag)
+
+			if (this.stopwatch >= this.entryDuration && !this.hasEnraged)
 			{
 				this.hasEnraged = true;
 				this.GrantItems();
@@ -79,6 +71,23 @@ namespace DireseekerMod.States
 				fx.transform.rotation = muzzle.rotation;
 				fx.transform.parent = muzzle;
 				GameObject.Destroy(fx, 30f);
+
+                BlastAttack bbbbbbbbb = new BlastAttack();
+                bbbbbbbbb.attacker = this.gameObject;
+                bbbbbbbbb.inflictor = this.gameObject;
+                bbbbbbbbb.teamIndex = TeamIndex.Neutral;
+                bbbbbbbbb.procCoefficient = 0f;
+                bbbbbbbbb.radius = 120f;
+                bbbbbbbbb.baseForce = 16000;
+                bbbbbbbbb.bonusForce = Vector3.up * 200f;
+                bbbbbbbbb.baseDamage = 0f;
+                bbbbbbbbb.falloffModel = BlastAttack.FalloffModel.Linear;
+                bbbbbbbbb.damageColorIndex = DamageColorIndex.Default;
+                bbbbbbbbb.attackerFiltering = AttackerFiltering.NeverHitSelf;
+                bbbbbbbbb.damageType = DamageType.Stun1s;
+
+                bbbbbbbbb.position = this.transform.position;
+                bbbbbbbbb.Fire();
 
                 stoppedSound = true;
 				Transform modelTransform = base.GetModelTransform();

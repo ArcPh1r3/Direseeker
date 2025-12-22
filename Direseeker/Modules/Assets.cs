@@ -43,7 +43,7 @@ namespace DireseekerMod.Modules
                 SoundAPI.SoundBanks.Add(array);
             }
 
-            Assets.bossPortrait = Assets.mainAssetBundle.LoadAsset<Sprite>("texDireseekerIcon").texture;
+            Assets.bossPortrait = Assets.altAssetBundle.LoadAsset<Sprite>("texDireseekerIcon").texture;
 			Assets.charPortrait = Assets.mainAssetBundle.LoadAsset<Sprite>("texDireseekerPlayerIcon").texture;
 			Assets.direseekerEncounter = Assets.mainAssetBundle.LoadAsset<GameObject>("BossEncounter");
 			Assets.direseekerEncounter.AddComponent<NetworkIdentity>();
@@ -62,10 +62,7 @@ namespace DireseekerMod.Modules
 
             roarEffect = altAssetBundle.LoadAsset<GameObject>("DireseekerRoar");
 
-            Material roarMat = Material.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/FallBoots/matBootShockwave.mat").WaitForCompletion());
-            roarMat.SetTexture("_RemapTex", Addressables.LoadAssetAsync<Texture>("RoR2/Base/Common/ColorRamps/texRampGolemElectric.png").WaitForCompletion());
-
-            roarEffect.transform.Find("Nova").GetComponent<ParticleSystemRenderer>().material = roarMat;
+            roarEffect.transform.Find("Nova").GetComponent<ParticleSystemRenderer>().material = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/matTeamAreaIndicatorFullMonster.mat").WaitForCompletion();
             roarEffect.transform.Find("Distortion").GetComponent<ParticleSystemRenderer>().material = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matDistortion.mat").WaitForCompletion();
 
             var pp = roarEffect.transform.Find("PP").gameObject;
@@ -81,13 +78,13 @@ namespace DireseekerMod.Modules
             var ppd = pp.AddComponent<PostProcessDuration>();
             ppd.ppVolume = ppv;
             ppd.ppWeightCurve = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ImpBoss/ImpBossBlink.prefab").WaitForCompletion().GetComponentInChildren<PostProcessDuration>().ppWeightCurve;
-            ppd.maxDuration = 3.5f;
+            ppd.maxDuration = 5f;
             ppd.destroyOnEnd = true;
 
             var sc = pp.AddComponent<SphereCollider>();
             sc.contactOffset = 0.01f;
             sc.isTrigger = true;
-            sc.radius = 80f;
+            sc.radius = 120f;
         }
 
 		public static void UpdateAssets()
