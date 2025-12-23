@@ -197,7 +197,7 @@ public class DireseekerSunController : MonoBehaviour
                                     }
                                     float critScale = isEnemy && crit ? 2 : 1;
                                     if (body.teamComponent.teamIndex == ownerBody.teamComponent.teamIndex & body != ownerBody) { ffScale *= 8f; }
-                                    dotInfo.totalDamage = 1f * ownerBody.damage * (float)overheatCount * ffScale * critScale;
+                                    dotInfo.totalDamage = 0.01f * ownerBody.damage * (float)overheatCount * ffScale * critScale;
                                     dotInfo.damageMultiplier = 1f * ffScale;
                                     StrengthenBurnUtils.CheckDotForUpgrade(ownerBody.inventory, ref dotInfo);
                                 }
