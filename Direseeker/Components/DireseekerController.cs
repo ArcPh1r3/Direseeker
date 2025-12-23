@@ -55,8 +55,8 @@ namespace DireseekerMod.Components
 
             for (int i = 0; i < ballsCount; i++)
             {
-                float speed = Random.Range(12f, 48f);
-                Vector3 lookVector = (pos + (Vector3.up * Random.Range(-4f, 16f)) + (7f * Random.insideUnitSphere)) - pos;
+                float speed = Random.Range(6f, 24f);
+                Vector3 lookVector = (pos + (Vector3.up * Random.Range(-6f, 2f)) + (7f * Random.insideUnitSphere)) - pos;
 
                 ProjectileManager.instance.FireProjectile(new FireProjectileInfo
                 {

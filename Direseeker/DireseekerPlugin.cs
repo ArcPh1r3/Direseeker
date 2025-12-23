@@ -1,8 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using BepInEx;
+﻿using BepInEx;
 using DireseekerMod.Modules;
 using R2API.Utils;
+using System.Security;
+using System.Security.Permissions;
+
+[module: UnverifiableCode]
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 
 namespace Direseeker
 {

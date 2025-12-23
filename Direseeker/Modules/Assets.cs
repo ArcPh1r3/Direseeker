@@ -17,8 +17,9 @@ namespace DireseekerMod.Modules
 	public static class Assets
 	{
 		public static GameObject roarEffect;
+        public static GameObject sunPrefab;
 
-		public static void PopulateAssets()
+        public static void PopulateAssets()
 		{
 			if (Assets.mainAssetBundle == null)
 			{
@@ -57,9 +58,6 @@ namespace DireseekerMod.Modules
 			Assets.direseekerButton.AddComponent<NetworkIdentity>();
 			Assets.direseekerButton.RegisterNetworkPrefab();	//Apparently this auto adds it to the contentpack?
 
-			Assets.mainAssetBundle.LoadAsset<Material>("matPillarPrediction").shader = shader;
-			Assets.flamePillarPredictionEffect = Assets.LoadEffect("FlamePillarPredictionEffect", "");
-
             roarEffect = altAssetBundle.LoadAsset<GameObject>("DireseekerRoar");
 
             roarEffect.transform.Find("Nova").GetComponent<ParticleSystemRenderer>().material = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/matTeamAreaIndicatorFullMonster.mat").WaitForCompletion();
@@ -85,6 +83,50 @@ namespace DireseekerMod.Modules
             sc.contactOffset = 0.01f;
             sc.isTrigger = true;
             sc.radius = 120f;
+
+			flamePillarPredictionEffect = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC2/Items/MeteorAttackOnHighDamage/RunicMeteorStrikePredictionEffect.prefab").WaitForCompletion(), "DireseekerPredictionEffect", true);
+            ContentAddition.AddEffect(flamePillarPredictionEffect);
+
+            sunPrefab = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Grandparent/GrandParentSun.prefab").WaitForCompletion(), "DireseekerSun", true);
+
+            //Transfering over some data we need from the old script; buff definitions, SFX definitions
+            DireseekerSunController sunScript = sunPrefab.AddComponent<DireseekerSunController>();
+            GrandParentSunController baseSunScript = sunPrefab.GetComponent<GrandParentSunController>();
+            sunScript.buffApplyEffect = baseSunScript.buffApplyEffect;
+            sunScript.buffDef = baseSunScript.buffDef;
+            sunScript.activeLoopDef = baseSunScript.activeLoopDef;
+            sunScript.damageLoopDef = baseSunScript.damageLoopDef;
+            sunScript.stopSoundName = baseSunScript.stopSoundName;
+            UnityEngine.Object.DestroyImmediate(baseSunScript); //VERY important to remove this once we're done transfering data, since we now have our own controller.
+
+            //Simple script for syncing positions
+            sunPrefab.AddComponent<DireseekerSunNetworkController>();
+
+            //EntityStateMachine that can go die in the actual sun. reset the NetworkStateMachine value just in case
+            UnityEngine.Object.DestroyImmediate(sunPrefab.GetComponent<EntityStateMachine>());
+            sunPrefab.AddComponent<EntityStateMachine>();
+            EntityStateMachine esmDireseeker = sunPrefab.GetComponent<EntityStateMachine>();
+            esmDireseeker.name = "Body";
+            esmDireseeker.initialStateType = new SerializableEntityStateType(typeof(DireseekerMod.States.Sun.SunSpawn));
+            sunPrefab.GetComponent<NetworkStateMachine>().stateMachines[0] = esmDireseeker;
+
+            //VFX - Use StaticValues.cruelSunVfxSize to control the scale, changing anything here will cause it not to align with gameplay logic anymore.
+            sunPrefab.transform.localScale = Vector3.one * 1f;
+            sunPrefab.transform.Find("VfxRoot/LightSpinner/LightSpinner/Point Light").GetComponent<Light>().intensity *= 1f;
+            sunPrefab.transform.Find("VfxRoot/LightSpinner/LightSpinner/Point Light").GetComponent<Light>().range = 200 * 1f;
+            sunPrefab.transform.Find("VfxRoot/Mesh/SunMesh").transform.localScale = Vector3.one * 1f;
+            sunPrefab.transform.Find("VfxRoot/Mesh/AreaIndicator").transform.localScale = Vector3.one * 180;
+
+            //Removing some distracting effects that don't work well here (imo).
+            UnityEngine.Object.DestroyImmediate(sunPrefab.transform.Find("VfxRoot/Mesh/SunMesh/MoonMesh").gameObject);
+            //ParticleSystems need to have their modules referenced in a variable before we can assign anything to them. I have no fucking idea why.
+            //Could destroy these instead of disabling them, but this framework might be useful later for tinkering with other particle settings.
+            ParticleSystem psSparks = sunPrefab.transform.Find("VfxRoot/Particles/Sparks").GetComponent<ParticleSystem>();
+            var psSparks_emission = psSparks.emission;
+            psSparks_emission.enabled = false;
+            ParticleSystem psGoo = sunPrefab.transform.Find("VfxRoot/Particles/Goo, Drip").GetComponent<ParticleSystem>();
+            var psGoo_emission = psGoo.emission;
+            psGoo_emission.enabled = false;
         }
 
 		public static void UpdateAssets()

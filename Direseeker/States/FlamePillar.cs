@@ -14,7 +14,7 @@ namespace DireseekerMod.States
 	public class FlamePillar : BaseState
 	{
         private static Material onFireMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/matOnFire.mat").WaitForCompletion();
-        private static GameObject predictionEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Meteor/MeteorStrikePredictionEffect.prefab").WaitForCompletion();
+		private static GameObject predictionEffect = Modules.Assets.flamePillarPredictionEffect;
         private static GameObject genericDelayBlast = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/GenericDelayBlast.prefab").WaitForCompletion();
 		private static GameObject magmaOrb = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/MagmaWorm/MagmaOrbExplosion.prefab").WaitForCompletion();
         public override void OnEnter()
@@ -218,7 +218,7 @@ namespace DireseekerMod.States
 		public static float pillarForce = 2000f;
 		public static float pillarVerticalForce = 4000f;
 		public static float pillarRadius = 6f;
-		public static float pillarDelay = 2f;
+		public static float pillarDelay = 1f;
 
 		private bool hasShownPrediction;
 		private bool predictionOk;

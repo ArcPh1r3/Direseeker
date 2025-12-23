@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using DireseekerMod.Components;
+﻿using DireseekerMod.Components;
+using DireseekerMod.Modules;
 using EntityStates;
 using RoR2;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
@@ -25,7 +26,6 @@ namespace DireseekerMod.States
 
 			if (NetworkServer.active) base.characterBody.AddBuff(RoR2Content.Buffs.ArmorBoost);
 
-			this.characterBody.baseRegen = -30f;
 			base.PlayAnimation("Gesture, Override", "PrepFlamebreath", "PrepFlamebreath.playbackRate", this.entryDuration);
             //Util.PlaySound("Play_magmaWorm_spawn_VO", base.gameObject);
             Util.PlaySound("sfx_direseeker_woosh", base.gameObject);
@@ -51,6 +51,18 @@ namespace DireseekerMod.States
 			base.OnExit();
 		}
 
+		private void SpawnSun()
+		{
+			if (!NetworkServer.active) return;
+
+			Transform chest = this.FindModelChild("Chest");
+            GameObject sun = UnityEngine.Object.Instantiate<GameObject>(Modules.Assets.sunPrefab, chest.position, Quaternion.identity, transform);
+			sun.transform.parent = chest;
+            sun.GetComponent<GenericOwnership>().ownerObject = base.gameObject;
+            NetworkServer.Spawn(sun);
+            sun.GetComponent<DireseekerSunNetworkController>().RpcPosition(chest.gameObject);
+        }
+
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
@@ -59,7 +71,9 @@ namespace DireseekerMod.States
 			if (this.stopwatch >= this.entryDuration && !this.hasEnraged)
 			{
 				this.hasEnraged = true;
-				this.GrantItems();
+                this.characterBody.baseRegen = -20f;
+                this.GrantItems();
+				this.SpawnSun();
                 ///AkSoundEngine.StopPlayingID(this.roarStartPlayID);
                 //Util.PlaySound("DireseekerRage", base.gameObject);
                 //Util.PlaySound("DireseekerRoar", base.gameObject);
@@ -78,7 +92,7 @@ namespace DireseekerMod.States
                 bbbbbbbbb.teamIndex = TeamIndex.Neutral;
                 bbbbbbbbb.procCoefficient = 0f;
                 bbbbbbbbb.radius = 120f;
-                bbbbbbbbb.baseForce = 16000;
+                bbbbbbbbb.baseForce = 8000;
                 bbbbbbbbb.bonusForce = Vector3.up * 200f;
                 bbbbbbbbb.baseDamage = 0f;
                 bbbbbbbbb.falloffModel = BlastAttack.FalloffModel.Linear;
@@ -91,8 +105,7 @@ namespace DireseekerMod.States
 
                 stoppedSound = true;
 				Transform modelTransform = base.GetModelTransform();
-				bool flag2 = modelTransform;
-				if (flag2)
+				if (modelTransform)
                 {
                     CharacterModel cm = modelTransform.gameObject.GetComponent<CharacterModel>();
 					if (cm)
