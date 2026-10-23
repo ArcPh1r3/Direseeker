@@ -14,19 +14,24 @@ namespace Direseeker
     [BepInDependency(R2API.ContentManagement.R2APIContentManager.PluginGUID)]
     [BepInDependency(R2API.PrefabAPI.PluginGUID)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
-	[BepInPlugin("com.rob.Direseeker", "Direseeker", "2.0.711")]
+	[BepInPlugin("com.rob.Direseeker", "Direseeker", "2.1.0")]
 	public class DireseekerPlugin : BaseUnityPlugin
-	{
-		public static bool AccurateEnemiesLoaded = false;
-		public static bool AccurateEnemiesCompat = true;
+    {
+        public static bool GoldChestForAllLoaded => BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.DestroyedClone.GoldChestForAll");
+        public static bool AccurateEnemiesLoaded => BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.AccurateEnemies");
+        public static bool AccurateEnemiesCompat = true;
 
 		public static PluginInfo pluginInfo;
+
+		public static DireseekerPlugin instance;
+
 		public void Awake()
 		{
-			AccurateEnemiesLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.AccurateEnemies");
+			instance = this;
 			pluginInfo = Info;
             DireseekerMod.Modules.Assets.PopulateAssets();
-			Tokens.RegisterLanguageTokens();
+            Modules.Config.InitConfigAttributes(typeof(Modules.DireseekerConfig));
+            Tokens.RegisterLanguageTokens();
 			Prefabs.CreatePrefab();
 			States.RegisterStates();
 			Skills.RegisterSkills();
@@ -35,5 +40,5 @@ namespace Direseeker
             DireseekerMod.Modules.Assets.UpdateAssets();
 			new Hooks().ApplyHooks();
 		}
-	}
+    }
 }

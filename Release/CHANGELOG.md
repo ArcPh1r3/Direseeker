@@ -1,3 +1,8 @@
+`2.1.0`
+- Added config to make Direseeker drop a free Legendary Chest for each player, rather than items
+- Running GoldChestForAll with this config enabled makes it drop only one chest
+- Added RoO support and config option for required button amount to spawn Direseeker
+
 `2.0.711`
 - Overheat reworked to only affect monsters, no longer harms players at all
   - Overheat has lowered effectiveness on self(direseeker)

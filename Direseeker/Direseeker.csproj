@@ -128,6 +128,9 @@
     <Reference Include="Rewired_CSharp">
       <HintPath>libs\Rewired_CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="RiskOfOptions">
+      <HintPath>libs\SoftDependencies\RiskOfOptions.dll</HintPath>
+    </Reference>
     <Reference Include="RoR2">
       <HintPath>libs\RoR2.dll</HintPath>
     </Reference>
@@ -368,6 +371,17 @@
     <Reference Include="Zio">
       <HintPath>libs\Zio.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="RiskOfRain2.GameLibs" Version="1.5.0-r.1" />
+    <PackageReference Include="MMHOOK.RoR2" Version="2025.11.19">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="UnityEngine.Modules" Version="2021.3.33">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -1,7 +1,7 @@
-﻿using System;
-using On.RoR2;
+﻿using HarmonyLib;
 using RoR2;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +9,10 @@ namespace DireseekerMod.Modules
 {
 	public class Hooks
 	{
-		private void InitButtonPositions()
+        public Vector3[] buttonPosition;
+        public Vector3[] buttonRotation;
+
+        private void InitButtonPositions()
 		{
 			this.buttonPosition = new Vector3[]
 			{
@@ -33,7 +36,6 @@ namespace DireseekerMod.Modules
 			};
 		}
 
-		// Token: 0x06000040 RID: 64 RVA: 0x00003EF4 File Offset: 0x000020F4
 		public void ApplyHooks()
 		{
 			this.InitButtonPositions();
@@ -50,14 +52,81 @@ namespace DireseekerMod.Modules
 						gameObject.transform.rotation = Quaternion.Euler(this.buttonRotation[i]);
 						NetworkServer.Spawn(gameObject);
 					}
-					GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(Assets.direseekerEncounter);
-					NetworkServer.Spawn(gameObject2);
+
+					GameObject encounter = UnityEngine.Object.Instantiate<GameObject>(Assets.direseekerEncounter);
+                    BossGroup bossGroup = encounter.GetComponentInChildren<BossGroup>();
+
+                    if (Direseeker.Modules.DireseekerConfig.legendaryChest)
+                    {
+                        bossGroup.bossDropChance = 9999f;
+                        bossGroup.forceTier3Reward = false;
+                        bossGroup.bossDrops = new System.Collections.Generic.List<UniquePickup>();
+                        bossGroup.bossDrops.Add(new UniquePickup
+                        {
+                            decayValue = 0f,
+                            upgradeValue = 0,
+                            pickupIndex = PickupCatalog.FindPickupIndex(Assets.fuckedItemDef.itemIndex)
+                        });
+                    }
+					else
+					{
+                        bossGroup.bossDropChance = 0f;
+                        bossGroup.bossDrops = new System.Collections.Generic.List<UniquePickup>();
+                        bossGroup.forceTier3Reward = true;
+                    }
+                    bossGroup.scaleRewardsByPlayerCount = Direseeker.Modules.DireseekerConfig.multipleDrops;
+
+					if (Direseeker.DireseekerPlugin.GoldChestForAllLoaded && Direseeker.Modules.DireseekerConfig.legendaryChest) bossGroup.scaleRewardsByPlayerCount = false;
+
+                    NetworkServer.Spawn(encounter);
 				}
 				orig(self);
 			};
-		}
 
-		public Vector3[] buttonPosition;
-		public Vector3[] buttonRotation;
-	}
+            On.RoR2.PickupDropletController.OnCollisionEnter += PickupDropletController_OnCollisionEnter;
+        }
+
+        private static void PickupDropletController_OnCollisionEnter(On.RoR2.PickupDropletController.orig_OnCollisionEnter orig, PickupDropletController self, Collision collision)
+        {
+			if (self)
+			{
+				if (self.pickupIndex == PickupCatalog.FindPickupIndex(Modules.Assets.fuckedItemDef.itemIndex))
+				{
+					if (NetworkServer.active && self.alive)
+					{
+						// yeah, this isn't good
+                        self.alive = false;
+                        SpawnChest(self.transform.position);
+                        UnityEngine.Object.Destroy(self.gameObject);
+					}
+					return;
+				}
+			}
+            orig(self, collision);
+        }
+
+        public static void SpawnChest(Vector3 pos)
+        {
+            Quaternion rot = Quaternion.identity;
+            RaycastHit raycastHit;
+            if (Physics.Raycast(pos + Vector3.up, Vector3.down, out raycastHit, 5f, LayerIndex.world.mask))
+            {
+                pos = raycastHit.point;
+                rot = Quaternion.FromToRotation(Vector3.up, raycastHit.normal);
+            }
+
+			GameObject chest = GameObject.Instantiate(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/GoldChest/GoldChest.prefab").WaitForCompletion(), pos, rot);
+			chest.GetComponent<PurchaseInteraction>().costType = CostTypeIndex.None;
+			chest.GetComponent<PurchaseInteraction>().cost = 0;
+			NetworkServer.Spawn(chest);
+
+            EffectManager.SpawnEffect(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/SurvivorPod/PodGroundImpact.prefab").WaitForCompletion(),
+new EffectData
+{
+    origin = pos,
+    rotation = Quaternion.identity,
+    scale = 2f
+}, true);
+        }
+    }
 }
