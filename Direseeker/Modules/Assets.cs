@@ -139,8 +139,6 @@ namespace DireseekerMod.Modules
 
             foreach (ParticleSystem particles in particleRoot.GetComponentsInChildren<ParticleSystem>(true))
             {
-
-                Debug.LogWarning(particles);
                 if (particles.name == "Donut")
                 {
                     continue;

@@ -1,7 +1,7 @@
 {
   "name": "Direseeker",
   "author": "EnforcerGang",
-  "version_number": "2.2.0",
+  "version_number": "2.3.0",
   "website_url": "https://github.com/Moffein/Direseeker",
   "description": "Adds the Direseeker from Risk of Rain 1 as a unique AWU-tier boss to replace the Abyssal Depths legendary chest.",
   "dependencies": [
