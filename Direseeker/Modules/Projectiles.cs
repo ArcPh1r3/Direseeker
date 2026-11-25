@@ -16,7 +16,7 @@ namespace DireseekerMod.Modules
 
         public static void CreateProjectiles()
 		{
-            GameObject fireballGhost = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/LemurianBruiser/LemurianBigFireball.prefab").WaitForCompletion().GetComponent<ProjectileController>().ghostPrefab.InstantiateClone("DireseekerFireballGhost", true);
+            GameObject fireballGhost = Addressables.LoadAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPathsBetter.RoR2_Base_LemurianBruiser.MegaFireballGhost_prefab).WaitForCompletion().InstantiateClone("DireseekerFireballGhost", true);
             fireballGhost.transform.Find("FlameTrails, World").localScale = Vector3.one * 1.25f;
             fireballGhost.transform.Find("FlameTrails, World").GetComponent<ParticleSystemRenderer>().material = Addressables.LoadAssetAsync<Material>("RoR2/DLC3/ExplosiveJunkBombDestructible/matJunkDroneBombExplosionFire.mat").WaitForCompletion();
             fireballGhost.transform.Find("FlameBillboards, Local").localScale = Vector3.one * 1.25f;
@@ -40,7 +40,7 @@ namespace DireseekerMod.Modules
 			ProjectileDamage fireballGroundDamage = fireballGroundPrefab.GetComponent<ProjectileDamage>();
             fireballGroundDamage.damageType.damageSource = DamageSource.Primary;
 
-            SetGhostPrefab(Projectiles.fireballGroundPrefab, Addressables.LoadAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.RoR2_Base_MagmaWorm.MagmaOrbGhost_prefab).WaitForCompletion());
+            SetGhostPrefab(Projectiles.fireballGroundPrefab, Addressables.LoadAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPathsBetter.RoR2_Base_MagmaWorm.MagmaOrbGhost_prefab).WaitForCompletion());
 			Projectiles.fireballGroundPrefab.GetComponent<ProjectileImpactExplosion>().impactEffect = impactEffect;
 			Projectiles.fireTrailPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/FireTrail.prefab").WaitForCompletion().InstantiateClone("DireseekerBossFireTrail", true);
 			Projectiles.fireTrailPrefab.AddComponent<NetworkIdentity>();
