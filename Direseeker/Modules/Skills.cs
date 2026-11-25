@@ -11,6 +11,8 @@ namespace DireseekerMod.Modules
 {
 	public static class Skills
 	{
+		public static SkillDef epicFlamePillarSkillDef;
+
 		public static void RegisterSkills()
 		{
 			GameObject bodyPrefab = Prefabs.direseekerBodyPrefab;
@@ -77,22 +79,22 @@ namespace DireseekerMod.Modules
 			};
 			ContentAddition.AddSkillFamily(skillFamily);
 
-			skillDef = ScriptableObject.CreateInstance<SkillDef>();
-			skillDef.activationState = new SerializableEntityStateType(typeof(FlamePillars));
-			skillDef.activationStateMachineName = "Body";
-			skillDef.baseMaxStock = 1;
-			skillDef.baseRechargeInterval = 12f;
-			skillDef.beginSkillCooldownOnSkillEnd = false;
-			skillDef.canceledFromSprinting = false;
-			skillDef.fullRestockOnAssign = true;
-			skillDef.interruptPriority = InterruptPriority.Any;
-			skillDef.resetCooldownTimerOnUse = false;
-			skillDef.isCombatSkill = true;
-			skillDef.mustKeyPress = false;
-			skillDef.cancelSprintingOnActivation = true;
-			skillDef.rechargeStock = 1;
-			skillDef.requiredStock = 1;
-			skillDef.stockToConsume = 1;
+			epicFlamePillarSkillDef = ScriptableObject.CreateInstance<SkillDef>();
+			epicFlamePillarSkillDef.activationState = new SerializableEntityStateType(typeof(FlamePillars));
+			epicFlamePillarSkillDef.activationStateMachineName = "Body";
+			epicFlamePillarSkillDef.baseMaxStock = 3;
+			epicFlamePillarSkillDef.baseRechargeInterval = 3f;
+			epicFlamePillarSkillDef.beginSkillCooldownOnSkillEnd = false;
+			epicFlamePillarSkillDef.canceledFromSprinting = false;
+			epicFlamePillarSkillDef.fullRestockOnAssign = true;
+			epicFlamePillarSkillDef.interruptPriority = InterruptPriority.Any;
+			epicFlamePillarSkillDef.resetCooldownTimerOnUse = true;
+			epicFlamePillarSkillDef.isCombatSkill = true;
+			epicFlamePillarSkillDef.mustKeyPress = false;
+			epicFlamePillarSkillDef.cancelSprintingOnActivation = true;
+			epicFlamePillarSkillDef.rechargeStock = 3;
+			epicFlamePillarSkillDef.requiredStock = 1;
+			epicFlamePillarSkillDef.stockToConsume = 1;
 			ContentAddition.AddSkillDef(skillDef);
 			componentInChildren.utility = bodyPrefab.AddComponent<GenericSkill>();
 			skillFamily = ScriptableObject.CreateInstance<SkillFamily>();
@@ -106,7 +108,25 @@ namespace DireseekerMod.Modules
 			};
 			ContentAddition.AddSkillFamily(skillFamily);
 
-			skillDef = ScriptableObject.CreateInstance<SkillDef>();
+
+            skillDef = ScriptableObject.CreateInstance<SkillDef>();
+            skillDef.activationState = new SerializableEntityStateType(typeof(FlamePillars));
+            skillDef.activationStateMachineName = "Body";
+            skillDef.baseMaxStock = 1;
+            skillDef.baseRechargeInterval = 12f;
+            skillDef.beginSkillCooldownOnSkillEnd = false;
+            skillDef.canceledFromSprinting = false;
+            skillDef.fullRestockOnAssign = true;
+            skillDef.interruptPriority = InterruptPriority.Any;
+            skillDef.resetCooldownTimerOnUse = false;
+            skillDef.isCombatSkill = true;
+            skillDef.mustKeyPress = false;
+            skillDef.cancelSprintingOnActivation = true;
+            skillDef.rechargeStock = 1;
+            skillDef.requiredStock = 1;
+            skillDef.stockToConsume = 1;
+
+            skillDef = ScriptableObject.CreateInstance<SkillDef>();
 			skillDef.activationState = new SerializableEntityStateType(typeof(Enrage));
 			skillDef.activationStateMachineName = "Body";
 			skillDef.baseMaxStock = 1;
@@ -114,7 +134,7 @@ namespace DireseekerMod.Modules
 			skillDef.beginSkillCooldownOnSkillEnd = false;
 			skillDef.canceledFromSprinting = false;
 			skillDef.fullRestockOnAssign = true;
-			skillDef.interruptPriority = InterruptPriority.Any;
+			skillDef.interruptPriority = InterruptPriority.PrioritySkill;
 			skillDef.resetCooldownTimerOnUse = false;
 			skillDef.isCombatSkill = true;
 			skillDef.mustKeyPress = false;

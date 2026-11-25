@@ -1,3 +1,18 @@
+`2.2.0`
+
+- fixed 2.0.711 nerfs being reverted
+- enrage can interrupt other attacks
+- replaced infinite flame pillars in enrage mode with 3 flame pillars in a row with a break in between
+- fixed missing soundapi dependency
+
+`2.1.0`
+
+- fixed version
+
+`2.0.1`
+
+- Added KO TL (Thanks Dice-001!)
+
 `2.1.0`
 - Added config to make Direseeker drop a free Legendary Chest for each player, rather than items
 - Running GoldChestForAll with this config enabled makes it drop only one chest
@@ -10,10 +25,6 @@
   - Overheat vfx toned down
 - Changed while enraged to be negative
 - Greatly increased the amount of fireball vomit while enraged
-
-`2.0.1`
-
-- Added KO TL (Thanks Dice-001!)
 
 `2.0.0`
 - Added custom SFX to everything

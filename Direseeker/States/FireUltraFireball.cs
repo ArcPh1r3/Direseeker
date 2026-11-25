@@ -35,7 +35,13 @@ namespace DireseekerMod.States
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
-			string muzzleName = "MuzzleMouth";
+
+            if (inputBank && skillLocator && skillLocator.special && inputBank.skill4.down)
+            {
+                skillLocator.special.ExecuteIfReady();
+            }
+
+            string muzzleName = "MuzzleMouth";
 			bool isAuthority = base.isAuthority;
 			if (isAuthority)
 			{

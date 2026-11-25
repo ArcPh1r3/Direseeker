@@ -94,7 +94,12 @@ namespace DireseekerMod.States
 		{
 			base.FixedUpdate();
 			float deltaTime = Time.time - lastUpdateTime;
-			lastUpdateTime = Time.time;
+
+            if (inputBank && skillLocator && skillLocator.special && inputBank.skill4.down)
+            {
+                skillLocator.special.ExecuteIfReady();
+            }
+            lastUpdateTime = Time.time;
 			this.stopwatch += deltaTime;
 			bool flag = this.stopwatch >= this.entryDuration && this.stopwatch < this.entryDuration + this.flamethrowerDuration && !this.hasBegunFlamethrower;
 			if (flag)

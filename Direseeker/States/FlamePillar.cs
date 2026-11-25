@@ -113,8 +113,12 @@ namespace DireseekerMod.States
 		public override void FixedUpdate()
 		{
 			base.FixedUpdate();
+            if (inputBank && skillLocator && skillLocator.special  && inputBank.skill4.down)
+            {
+                skillLocator.special.ExecuteIfReady();
+            }
 
-			this.stopwatch += GetDeltaTime();
+            this.stopwatch += GetDeltaTime();
 			switch (this.subState)
 			{
 				case FlamePillar.SubState.Prep:

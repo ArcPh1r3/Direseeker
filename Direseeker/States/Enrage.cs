@@ -38,7 +38,7 @@ namespace DireseekerMod.States
 				if (base.characterBody.master && base.characterBody.master.inventory)
 				{
 					base.characterBody.master.inventory.GiveItem(RoR2Content.Items.AdaptiveArmor, 1);
-					base.characterBody.master.inventory.GiveItem(RoR2Content.Items.AlienHead, 10);
+					//base.characterBody.master.inventory.GiveItem(RoR2Content.Items.AlienHead, 10);//changed to replacing to a skilldef with different cooldowns
 					base.characterBody.master.inventory.GiveItem(RoR2Content.Items.Hoof, 3);
 					base.characterBody.master.inventory.GiveItem(RoR2Content.Items.Syringe, 3);
 				}
@@ -71,6 +71,10 @@ namespace DireseekerMod.States
 				this.hasEnraged = true;
                 this.characterBody.baseRegen = -20f;
                 this.GrantItems();
+				if (skillLocator)
+				{
+					skillLocator.utility.SetSkillOverride(this, Skills.epicFlamePillarSkillDef, GenericSkill.SkillOverridePriority.Replacement);
+				}
 				this.SpawnSun();
                 ///AkSoundEngine.StopPlayingID(this.roarStartPlayID);
                 //Util.PlaySound("DireseekerRage", base.gameObject);
