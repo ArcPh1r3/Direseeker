@@ -10,7 +10,20 @@ namespace DireseekerMod.States.Missions.DireseekerEncounter
 {
 	public class Listening : EntityState
 	{
-		public override void OnEnter()
+        public static float delayBeforeBeginningEncounter = 3f;
+        public static int buttonsPressedToTriggerEncounter = Direseeker.Modules.DireseekerConfig.requiredButtons.Value;
+
+        private ScriptedCombatEncounter scriptedCombatEncounter;
+        private List<DireseekerButtonController> buttonList = new List<DireseekerButtonController>();
+
+        private const float delayBeforeRegisteringButtons = 2f;
+
+        private bool hasRegisteredButtons;
+        private int previousPressedButtonCount;
+        private bool beginEncounterCountdown;
+        private float encounterCountdown;
+
+        public override void OnEnter()
 		{
 			base.OnEnter();
 			this.scriptedCombatEncounter = base.GetComponent<ScriptedCombatEncounter>();
@@ -21,10 +34,11 @@ namespace DireseekerMod.States.Missions.DireseekerEncounter
 			base.FixedUpdate();
 			if (NetworkServer.active)
 			{
-				if (base.fixedAge >= 2f)
+				if (base.fixedAge >= delayBeforeRegisteringButtons)
 				{
 					this.RegisterButtons();
 				}
+
 				if (this.hasRegisteredButtons)
 				{
 					int num = 0;
@@ -82,18 +96,5 @@ namespace DireseekerMod.States.Missions.DireseekerEncounter
 				this.hasRegisteredButtons = true;
 			}
 		}
-
-		public static float delayBeforeBeginningEncounter = 3f;
-		public static int buttonsPressedToTriggerEncounter = 4;
-
-		private ScriptedCombatEncounter scriptedCombatEncounter;
-		private List<DireseekerButtonController> buttonList = new List<DireseekerButtonController>();
-
-		private const float delayBeforeRegisteringButtons = 2f;
-
-		private bool hasRegisteredButtons;
-		private int previousPressedButtonCount;
-		private bool beginEncounterCountdown;
-		private float encounterCountdown;
 	}
 }

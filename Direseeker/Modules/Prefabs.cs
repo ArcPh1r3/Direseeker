@@ -145,6 +145,19 @@ namespace DireseekerMod.Modules
 
 			// wow this process got a whole lot messier huh
 
+			// yeah it did
+			// finally finally, change blood color just because
+			SurfaceDef direseekerSurfaceDef = ScriptableObject.CreateInstance<SurfaceDef>();
+			direseekerSurfaceDef.approximateColor = new Color(1f, 80f / 255f, 0f, 1f);
+            direseekerSurfaceDef.impactEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/VFX/SpurtGenericBlood.prefab").WaitForCompletion();
+            direseekerSurfaceDef.impactSoundString = "Play_lemurianBruiser_impact";
+
+            foreach (SurfaceDefProvider sd in direseekerCharacterModel.GetComponentsInChildren<SurfaceDefProvider>())
+			{
+				if (sd) sd.surfaceDef = direseekerSurfaceDef;
+
+            }
+
 			Prefabs.masterPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/LemurianBruiser/LemurianBruiserMaster.prefab").WaitForCompletion().InstantiateClone("DireseekerBossMaster", true);
 			CharacterMaster characterMaster = Prefabs.masterPrefab.GetComponent<CharacterMaster>();
 			characterMaster.bodyPrefab = Prefabs.direseekerBodyPrefab;

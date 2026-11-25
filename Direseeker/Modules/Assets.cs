@@ -11,7 +11,6 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 using UnityEngine.Rendering.PostProcessing;
-using static RoR2.SolusWing.SolusWingPodAI.Simulation.SimulationState;
 
 namespace DireseekerMod.Modules
 {
@@ -19,6 +18,10 @@ namespace DireseekerMod.Modules
 	{
 		public static GameObject roarEffect;
         public static GameObject sunPrefab;
+
+        public static ItemDef fuckedItemDef;
+
+        public static ExplicitPickupDropTable dropTable;
 
         public static void PopulateAssets()
 		{
@@ -174,6 +177,32 @@ namespace DireseekerMod.Modules
             ParticleSystem psGoo = sunPrefab.transform.Find("VfxRoot/Particles/Goo, Drip").GetComponent<ParticleSystem>();
             var psGoo_emission = psGoo.emission;
             psGoo_emission.enabled = false;
+
+            // don't shoot me for this
+            fuckedItemDef = ItemDef.Instantiate(Addressables.LoadAssetAsync<ItemDef>("RoR2/Base/Behemoth/Behemoth.asset").WaitForCompletion());
+            fuckedItemDef.name = "GoldChestDrop";
+            fuckedItemDef.nameToken = "";
+            fuckedItemDef.descriptionToken = "";
+            fuckedItemDef.pickupToken = "";
+            fuckedItemDef.loreToken = "";
+            fuckedItemDef.canRemove = false;
+            fuckedItemDef.hidden = true;
+            fuckedItemDef.requiredExpansion = null;
+            fuckedItemDef.tags = new ItemTag[]
+            {
+                ItemTag.AIBlacklist,
+                ItemTag.BrotherBlacklist,
+                ItemTag.CannotCopy,
+                ItemTag.CannotDuplicate,
+                ItemTag.CannotSteal,
+                ItemTag.WorldUnique
+            };
+            fuckedItemDef.unlockableDef = null;
+
+            R2API.ContentAddition.AddItemDef(fuckedItemDef);
+
+            dropTable = ScriptableObject.CreateInstance<ExplicitPickupDropTable>();
+            dropTable.canDropBeReplaced = false;
         }
 
 		public static void UpdateAssets()
@@ -198,12 +227,14 @@ namespace DireseekerMod.Modules
 			scriptedCombatEncounter.teamIndex = TeamIndex.Monster;
 			scriptedCombatEncounter.spawnOnStart = false;
 			scriptedCombatEncounter.grantUniqueBonusScaling = true;
+
 			BossGroup bossGroup = gameObject.AddComponent<BossGroup>();
 			bossGroup.bossDropChance = 1f;
 			bossGroup.dropPosition = Assets.direseekerEncounter.transform.GetChild(0).GetChild(1);
 			bossGroup.forceTier3Reward = true;
 			bossGroup.scaleRewardsByPlayerCount = true;
 			bossGroup.shouldDisplayHealthBarOnHud = true;
+
 			CombatSquad combatSquad = gameObject.AddComponent<CombatSquad>();
 			EntityStateMachine entityStateMachine = gameObject.AddComponent<EntityStateMachine>();
 			entityStateMachine.initialStateType = new SerializableEntityStateType(typeof(Listening));
